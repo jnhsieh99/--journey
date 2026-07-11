@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEPT 全民英檢練習平台</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── 登陸頁專屬 ── */
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+
+    .landing-hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .landing-logo {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.15));
+    }
+
+    .landing-hero h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #4caf50, #2196f3, #9c27b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .landing-hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .landing-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #2196f3, #9c27b0);
+      color: #fff;
+      padding: 14px 36px;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(33,150,243,.35);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .landing-cta:hover { opacity: .9; transform: translateY(-2px); }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 56px;
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .feature-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .feature-chip .chip-icon { font-size: 1.5rem; }
+    .feature-chip strong { display: block; font-weight: 700; margin-bottom: 2px; }
+    .feature-chip span { font-size: .8rem; color: var(--text-muted); }
+
+    .level-quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .level-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .level-pill:hover { transform: scale(1.05); opacity: .9; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="logo">📝</span>
+      <span>GEPT 練習平台</span>
+    </div>
+    <div class="navbar-links">
+      <a href="index.html" class="nav-link active">首頁</a>
+      <a href="home.html" class="nav-link">儀表板</a>
+    </div>
+  </div>
+</nav>
+
+<main class="landing-hero">
+  <div class="landing-logo">📝</div>
+  <h1>GEPT 全民英檢<br>練習平台</h1>
+  <p class="subtitle">
+    涵蓋初級、中級、中高級三個等級的練習題庫。<br>
+    即時作答、自動評分、記錄進度，讓備考更有效率！
+  </p>
+
+  <a href="home.html" class="landing-cta">
+    開始練習 →
+  </a>
+
+  <div class="level-quick">
+    <a href="elementary.html" class="level-pill" style="background:#4caf50">
+      🌱 初級
+    </a>
+    <a href="intermediate.html" class="level-pill" style="background:#2196f3">
+      📘 中級
+    </a>
+    <a href="high-intermediate.html" class="level-pill" style="background:#9c27b0">
+      🎓 中高級
+    </a>
+  </div>
+
+  <div class="features">
+    <div class="feature-chip">
+      <span class="chip-icon">🗂️</span>
+      <div>
+        <strong>豐富題庫</strong>
+        <span>三級各 20 題，隨機抽題</span>
+      </div>
+    </div>
+    <div class="feature-chip">
+      <span class="chip-icon">📊</span>
+      <div>
+        <strong>進度追蹤</strong>
+        <span>自動儲存最佳成績與練習次數</span>
+      </div>
+    </div>
+    <div class="feature-chip">
+      <span class="chip-icon">💡</span>
+      <div>
+        <strong>即時解析</strong>
+        <span>每題附詳細中文解析</span>
+      </div>
+    </div>
+    <div class="feature-chip">
+      <span class="chip-icon">⏱️</span>
+      <div>
+        <strong>計時模式</strong>
+        <span>計算作答時間，模擬真實考試</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  © 2025 GEPT 練習平台 ｜ 本站題目僅供練習參考，版權歸各原著者所有
+</footer>
+
+</body>
+</html>

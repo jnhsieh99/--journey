@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中高級測驗 — GEPT 練習平台</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="logo">📝</span>
+      <span>GEPT 練習平台</span>
+    </div>
+    <div class="navbar-links">
+      <a href="index.html" class="nav-link">首頁</a>
+      <a href="home.html" class="nav-link">儀表板</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="container quiz-wrapper">
+
+    <!-- 設定面板 -->
+    <div id="setup-panel">
+      <div class="hero" style="padding:36px 0 28px">
+        <div style="font-size:2.5rem; margin-bottom:10px">🎓</div>
+        <h1 style="font-size:1.7rem">中高級測驗</h1>
+        <p>General English Proficiency Test — High-Intermediate</p>
+      </div>
+
+      <div class="settings-panel">
+        <h3>⚙️ 測驗設定</h3>
+        <div class="setting-row">
+          <label for="q-count">出題數量</label>
+          <select id="q-count">
+            <option value="5">5 題（快速練習）</option>
+            <option value="10" selected>10 題（標準）</option>
+            <option value="15">15 題（進階）</option>
+            <option value="20">20 題（完整題庫）</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="time-limit">每題限時</label>
+          <select id="time-limit">
+            <option value="0" selected>無限制</option>
+            <option value="60">60 秒</option>
+            <option value="90">90 秒</option>
+            <option value="120">120 秒</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 進度摘要 -->
+      <div class="settings-panel" id="prev-progress" style="display:none">
+        <h3>📊 歷史紀錄</h3>
+        <div class="stat-row">
+          <span class="label">練習次數</span>
+          <span class="value" id="prev-attempts">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="label">最佳成績</span>
+          <span class="value" id="prev-best">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="label">累計時間</span>
+          <span class="value" id="prev-time">—</span>
+        </div>
+      </div>
+
+      <div style="text-align:center; padding:8px 0 24px">
+        <button class="btn btn-primary" id="start-btn" style="font-size:1rem; padding:12px 36px">
+          🚀 開始測驗
+        </button>
+      </div>
+    </div>
+
+    <!-- 測驗區 -->
+    <div id="quiz-root" style="display:none"></div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  © 2025 GEPT 練習平台 ｜ 本站題目僅供練習參考，版權歸各原著者所有
+</footer>
+
+<script src="data.js"></script>
+<script src="progress.js"></script>
+<script src="quiz.js"></script>
+<script>
+  const prev = getLevelProgress('highIntermediate');
+  if (prev.attempts > 0) {
+    document.getElementById('prev-progress').style.display = 'block';
+    document.getElementById('prev-attempts').textContent = prev.attempts + ' 次';
+    document.getElementById('prev-best').textContent     = prev.bestPct + '%';
+    document.getElementById('prev-time').textContent     = formatTime(prev.totalTime);
+  }
+
+  document.getElementById('start-btn').addEventListener('click', function () {
+    const count     = parseInt(document.getElementById('q-count').value, 10);
+    const timeLimit = parseInt(document.getElementById('time-limit').value, 10);
+
+    document.getElementById('setup-panel').style.display = 'none';
+    const root = document.getElementById('quiz-root');
+    root.style.display = 'block';
+
+    const quiz = new QuizEngine({ level: 'highIntermediate', count, timeLimit });
+    quiz.mount(root);
+  });
+</script>
+</body>
+</html>

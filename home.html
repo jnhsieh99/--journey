@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>儀表板 — GEPT 練習平台</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="logo">📝</span>
+      <span>GEPT 練習平台</span>
+    </div>
+    <div class="navbar-links">
+      <a href="index.html" class="nav-link">首頁</a>
+      <a href="home.html" class="nav-link active">儀表板</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <div class="hero">
+      <h1>📊 學習儀表板</h1>
+      <p>追蹤你的練習進度，選擇級別開始今天的測驗！</p>
+    </div>
+
+    <!-- 全站統計 -->
+    <section class="stats-section">
+      <div class="section-title">📈 整體統計</div>
+      <div class="stats-grid" id="global-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-attempts">0</div>
+          <div class="stat-label">總練習次數</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-time">0:00</div>
+          <div class="stat-label">總練習時間</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-levels">0 / 3</div>
+          <div class="stat-label">已練習級別</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 級別卡片 -->
+    <section class="stats-section">
+      <div class="section-title">🎯 選擇練習級別</div>
+      <div class="level-grid" id="level-grid">
+
+        <!-- 初級 -->
+        <div class="card level-card">
+          <div class="level-card-header" style="background:#4caf50">
+            <div class="icon">🌱</div>
+            <div>
+              <h2>初級</h2>
+              <p>Elementary</p>
+            </div>
+          </div>
+          <div class="level-card-body">
+            <p class="level-card-desc">適合國中畢業程度，能理解簡單的英語對話與短文</p>
+
+            <div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="prog-elem" style="width:0%; background:#4caf50"></div>
+              </div>
+              <div class="progress-label">
+                <span>最佳成績</span>
+                <span id="pct-elem">尚未練習</span>
+              </div>
+            </div>
+
+            <div class="stat-row">
+              <span class="label">練習次數</span>
+              <span class="value" id="attempts-elem">0 次</span>
+            </div>
+            <div class="stat-row">
+              <span class="label">題庫總題數</span>
+              <span class="value">20 題</span>
+            </div>
+
+            <a href="elementary.html" class="start-btn btn" style="background:#4caf50">開始練習 →</a>
+          </div>
+        </div>
+
+        <!-- 中級 -->
+        <div class="card level-card">
+          <div class="level-card-header" style="background:#2196f3">
+            <div class="icon">📘</div>
+            <div>
+              <h2>中級</h2>
+              <p>Intermediate</p>
+            </div>
+          </div>
+          <div class="level-card-body">
+            <p class="level-card-desc">適合高中畢業程度，能閱讀一般英語文章並進行日常溝通</p>
+
+            <div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="prog-inter" style="width:0%; background:#2196f3"></div>
+              </div>
+              <div class="progress-label">
+                <span>最佳成績</span>
+                <span id="pct-inter">尚未練習</span>
+              </div>
+            </div>
+
+            <div class="stat-row">
+              <span class="label">練習次數</span>
+              <span class="value" id="attempts-inter">0 次</span>
+            </div>
+            <div class="stat-row">
+              <span class="label">題庫總題數</span>
+              <span class="value">20 題</span>
+            </div>
+
+            <a href="intermediate.html" class="start-btn btn" style="background:#2196f3">開始練習 →</a>
+          </div>
+        </div>
+
+        <!-- 中高級 -->
+        <div class="card level-card">
+          <div class="level-card-header" style="background:#9c27b0">
+            <div class="icon">🎓</div>
+            <div>
+              <h2>中高級</h2>
+              <p>High-Intermediate</p>
+            </div>
+          </div>
+          <div class="level-card-body">
+            <p class="level-card-desc">適合大學畢業程度，能閱讀複雜文章並進行流利的英語溝通</p>
+
+            <div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="prog-high" style="width:0%; background:#9c27b0"></div>
+              </div>
+              <div class="progress-label">
+                <span>最佳成績</span>
+                <span id="pct-high">尚未練習</span>
+              </div>
+            </div>
+
+            <div class="stat-row">
+              <span class="label">練習次數</span>
+              <span class="value" id="attempts-high">0 次</span>
+            </div>
+            <div class="stat-row">
+              <span class="label">題庫總題數</span>
+              <span class="value">20 題</span>
+            </div>
+
+            <a href="high-intermediate.html" class="start-btn btn" style="background:#9c27b0">開始練習 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 重置資料 -->
+    <section class="stats-section">
+      <div style="text-align:right">
+        <button class="btn btn-outline" id="reset-btn" onclick="confirmReset()">🗑️ 清除所有練習紀錄</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  © 2025 GEPT 練習平台 ｜ 本站題目僅供練習參考，版權歸各原著者所有
+</footer>
+
+<script src="data.js"></script>
+<script src="progress.js"></script>
+<script>
+  function refreshDashboard() {
+    const gs = getGlobalStats();
+    document.getElementById('stat-attempts').textContent = gs.totalAttempts;
+    document.getElementById('stat-time').textContent     = formatTime(gs.totalTime);
+    document.getElementById('stat-levels').textContent   = `${gs.levelsStarted} / 3`;
+
+    const levels = [
+      { key: 'elementary',       progId: 'prog-elem',  pctId: 'pct-elem',  attId: 'attempts-elem' },
+      { key: 'intermediate',     progId: 'prog-inter', pctId: 'pct-inter', attId: 'attempts-inter' },
+      { key: 'highIntermediate', progId: 'prog-high',  pctId: 'pct-high',  attId: 'attempts-high' }
+    ];
+
+    levels.forEach(({ key, progId, pctId, attId }) => {
+      const p = getLevelProgress(key);
+      document.getElementById(progId).style.width = p.bestPct + '%';
+      document.getElementById(pctId).textContent  = p.attempts > 0 ? p.bestPct + '%' : '尚未練習';
+      document.getElementById(attId).textContent  = (p.attempts || 0) + ' 次';
+    });
+  }
+
+  function confirmReset() {
+    if (confirm('確定要清除所有練習紀錄嗎？此操作無法復原。')) {
+      clearProgress();
+      refreshDashboard();
+    }
+  }
+
+  refreshDashboard();
+</script>
+</body>
+</html>
