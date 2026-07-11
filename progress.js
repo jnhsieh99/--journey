@@ -102,7 +102,7 @@ function formatTime(sec) {
 }
 
 // ── 進度百分比（用於進度條） ─────────────────
-function progressPct(level, totalQuestions) {
+function progressPct(level) {
   const p = getLevelProgress(level);
   if (!p.attempts) return 0;
   return Math.min(Math.round((p.bestPct)), 100);

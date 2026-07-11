@@ -112,7 +112,7 @@ class QuizEngine {
     const idx  = this.current;
     const total = this.questions.length;
     const letters = ['A', 'B', 'C', 'D'];
-    const pct = Math.round(((idx) / total) * 100);
+    const pct = Math.round(((idx + 1) / total) * 100);
 
     // 每題計時器 HTML
     const timerHtml = this.timeLimit

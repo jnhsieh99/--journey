@@ -164,7 +164,7 @@
     <!-- 重置資料 -->
     <section class="stats-section">
       <div style="text-align:right">
-        <button class="btn btn-outline" id="reset-btn" onclick="confirmReset()">🗑️ 清除所有練習紀錄</button>
+        <button class="btn btn-outline" id="reset-btn">🗑️ 清除所有練習紀錄</button>
       </div>
     </section>
 
@@ -198,12 +198,12 @@
     });
   }
 
-  function confirmReset() {
+  document.getElementById('reset-btn').addEventListener('click', function () {
     if (confirm('確定要清除所有練習紀錄嗎？此操作無法復原。')) {
       clearProgress();
       refreshDashboard();
     }
-  }
+  });
 
   refreshDashboard();
 </script>
