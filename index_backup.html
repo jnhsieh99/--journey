@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 全民英檢練習系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation h4 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .explanation p {
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .score-display h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .score-display p {
+            font-size: 1.2em;
+        }
+
+        .reset-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: white;
+            color: #28a745;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .back-btn {
+                position: static;
+                transform: none;
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-btn">← 返回</a>
+            <h1>📗 GEPT 中級練習</h1>
+            <p>Intermediate Level - CEFR B1</p>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                <p style="margin-bottom: 10px; font-weight: bold;">📖 官方單字表下載：</p>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Elementary.pdf" target="_blank" style="color: white; text-decoration: none; margin: 0 10px; display: inline-block; padding: 8px 15px; background: rgba(255,255,255,0.3); border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'">初級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Intermediate.pdf" target="_blank" style="color: white; text-decoration: none; margin: 0 10px; display: inline-block; padding: 8px 15px; background: rgba(255,255,255,0.3); border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'">中級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_High-Intermediate.pdf" target="_blank" style="color: white; text-decoration: none; margin: 0 10px; display: inline-block; padding: 8px 15px; background: rgba(255,255,255,0.3); border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'">中高級</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="question-card" data-answer="A">
+                    <div class="question-number">第 1 題</div>
+                    <div class="question-text">
+                        The manager was very _______ when she praised the whole team for their hard work.
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">(A) generous</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">(B) generosity</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">(C) generously</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">(D) generate</label>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h4>✅ 正確答案：(A) generous</h4>
+                        <p><strong>解析：</strong>空格前有 be 動詞 "was" 和副詞 "very"，後面需要形容詞來描述主詞的狀態。generous (慷慨的、大方的) 是形容詞，符合句意。</p>
+                        <p><strong>翻譯：</strong>經理在讚揚整個團隊的辛勤工作時非常大方。</p>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" data-answer="A">
+                    <div class="question-number">第 2 題</div>
+                    <div class="question-text">
+                        Because of the heavy traffic, we had to _______ our trip to the airport.
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">(A) postpone</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">(B) prevent</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">(C) promote</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">(D) pretend</label>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h4>✅ 正確答案：(A) postpone</h4>
+                        <p><strong>解析：</strong>postpone (延後、推遲) 符合句意，因為交通堵塞而需要延遲行程。prevent (阻止)、promote (促進)、pretend (假裝) 皆不符合語意。</p>
+                        <p><strong>翻譯：</strong>因為交通繁忙，我們不得不推遲前往機場的行程。</p>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" data-answer="A">
+                    <div class="question-number">第 3 題</div>
+                    <div class="question-text">
+                        Her doctor _______ that she get more exercise and eat healthier food.
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3a" value="A">
+                            <label for="q3a">(A) suggested</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3b" value="B">
+                            <label for="q3b">(B) suggestion</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3c" value="C">
+                            <label for="q3c">(C) suggestive</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3d" value="D">
+                            <label for="q3d">(D) suggestible</label>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h4>✅ 正確答案：(A) suggested</h4>
+                        <p><strong>解析：</strong>空格需要動詞來完成句子。suggested (建議) 是動詞過去式，且 "suggest that + 主詞 + 原形動詞" 是正確的句型結構。</p>
+                        <p><strong>翻譯：</strong>她的醫生建議她多運動並吃得更健康。</p>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" data-answer="A">
+                    <div class="question-number">第 4 題</div>
+                    <div class="question-text">
+                        The new employee seems very _______; she always finishes her tasks before the deadline.
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="A">
+                            <label for="q4a">(A) reliable</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="B">
+                            <label for="q4b">(B) reliably</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="C">
+                            <label for="q4c">(C) reliance</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="D">
+                            <label for="q4d">(D) rely</label>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h4>✅ 正確答案：(A) reliable</h4>
+                        <p><strong>解析：</strong>"seem + 形容詞" 是固定用法，用來描述主詞的特質。reliable (可靠的) 是形容詞，符合句意。</p>
+                        <p><strong>翻譯：</strong>這位新員工看起來非常可靠；她總是在截止日期前完成任務。</p>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card" data-answer="A">
+                    <div class="question-number">第 5 題</div>
+                    <div class="question-text">
+                        Despite the bad weather, the outdoor concert was _______ a success.
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">(A) considerable</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">(B) considerably</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="C">
+                            <label for="q5c">(C) considerate</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="D">
+                            <label for="q5d">(D) consider</label>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <h4>✅ 正確答案：(A) considerable</h4>
+                        <p><strong>解析：</strong>空格後有名詞 "success"，前面需要形容詞來修飾。considerable (相當大的) 符合句意，表示音樂會相當成功。considerably 是副詞，considerate 意為「體貼的」不符合語境。</p>
+                        <p><strong>翻譯：</strong>儘管天氣不好，這場戶外音樂會仍然相當成功。</p>
+                    </div>
+                </div>
+
+                <button type="button" class="submit-btn" id="submitBtn">提交答案</button>
+
+                <div class="score-display" id="scoreDisplay">
+                    <h2>🎉 測驗結果</h2>
+                    <p id="scoreText"></p>
+                    <button type="button" class="reset-btn" id="resetBtn">重新測驗</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreText = document.getElementById('scoreText');
+        const questionCards = document.querySelectorAll('.question-card');
+
+        submitBtn.addEventListener('click', function() {
+            let score = 0;
+            let answered = 0;
+
+            questionCards.forEach((card, index) => {
+                const questionNum = index + 1;
+                const selectedOption = document.querySelector(`input[name="q${questionNum}"]:checked`);
+                
+                if (selectedOption) {
+                    answered++;
+                    const correctAnswer = card.getAttribute('data-answer');
+                    const userAnswer = selectedOption.value;
+                    const options = card.querySelectorAll('.option');
+                    
+                    options.forEach(option => {
+                        const input = option.querySelector('input');
+                        if (input.value === correctAnswer) {
+                            option.classList.add('correct');
+                        }
+                        if (input.checked && input.value !== correctAnswer) {
+                            option.classList.add('incorrect');
+                        }
+                        input.disabled = true;
+                    });
+
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                    }
+
+                    // Show explanation
+                    const explanation = card.querySelector('.explanation');
+                    explanation.classList.add('show');
+                }
+            });
+
+            if (answered < 5) {
+                alert('請完成所有題目再提交答案！');
+                return;
+            }
+
+            const percentage = (score / 5 * 100).toFixed(0);
+            let message = '';
+            if (score === 5) {
+                message = '太棒了！全部答對！💯';
+            } else if (score >= 4) {
+                message = '表現優秀！繼續加油！👏';
+            } else if (score >= 3) {
+                message = '還不錯！再接再厲！💪';
+            } else {
+                message = '需要再努力！多複習單字喔！📖';
+            }
+
+            scoreText.innerHTML = `您答對了 <strong>${score}</strong> 題，共 5 題<br>得分：${percentage} 分<br>${message}`;
+            scoreDisplay.classList.add('show');
+            submitBtn.disabled = true;
+
+            // Scroll to score
+            scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        resetBtn.addEventListener('click', function() {
+            // Reset all inputs
+            const allInputs = document.querySelectorAll('input[type="radio"]');
+            allInputs.forEach(input => {
+                input.checked = false;
+                input.disabled = false;
+            });
+
+            // Reset all options styling
+            const allOptions = document.querySelectorAll('.option');
+            allOptions.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Hide all explanations
+            const allExplanations = document.querySelectorAll('.explanation');
+            allExplanations.forEach(explanation => {
+                explanation.classList.remove('show');
+            });
+
+            // Hide score display
+            scoreDisplay.classList.remove('show');
+            submitBtn.disabled = false;
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

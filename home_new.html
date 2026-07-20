@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 全民英檢學習平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f5f7fa;
+        }
+
+        /* Header Section */
+        .header {
+            background: white;
+            padding: 30px 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .header .subtitle {
+            font-size: 0.9em;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .header-info {
+            text-align: right;
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .stat-unit {
+            font-size: 0.8em;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        /* Content Section */
+        .content {
+            padding: 30px 40px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Learning Path Section */
+        .learning-path {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .path-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .path-steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, #48bb78 0%, #4299e1 50%, #ed8936 100%);
+            z-index: 0;
+        }
+
+        .path-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #48bb78;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin: 0 auto 15px;
+            transition: all 0.3s;
+        }
+
+        .path-step:nth-child(2) .step-icon {
+            border-color: #4299e1;
+        }
+
+        .path-step:nth-child(3) .step-icon {
+            border-color: #ed8936;
+        }
+
+        .path-step:nth-child(4) .step-icon {
+            border-color: #9f7aea;
+        }
+
+        .step-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.85em;
+            color: #718096;
+        }
+
+        /* Weakness Analysis Section */
+        .weakness-section {
+            margin-bottom: 40px;
+        }
+
+        .weakness-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .weakness-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .weakness-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .weakness-card.weak {
+            border-left-color: #f56565;
+        }
+
+        .weakness-card.moderate {
+            border-left-color: #ed8936;
+        }
+
+        .weakness-card.strong {
+            border-left-color: #48bb78;
+        }
+
+        .weakness-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .weakness-icon {
+            font-size: 1.5em;
+        }
+
+        .weakness-level {
+            font-size: 0.85em;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .weakness-card.weak .weakness-level {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .weakness-card.moderate .weakness-level {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .weakness-card.strong .weakness-level {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .weakness-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .weakness-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.8em;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .stat-item .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .weak-value {
+            color: #f56565;
+        }
+
+        .moderate-value {
+            color: #ed8936;
+        }
+
+        .strong-value {
+            color: #48bb78;
+        }
+
+        .weakness-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .keyword {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #edf2f7;
+            color: #4a5568;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+
+        .improve-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background: #edf2f7;
+            color: #2d3748;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .weakness-card.weak .improve-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        .weakness-card.moderate .improve-btn {
+            background: #ed8936;
+            color: white;
+        }
+
+        .weakness-card.strong .improve-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .improve-btn:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        /* Practice Mode Cards */
+        .mode-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .mode-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-top: 4px solid #48bb78;
+        }
+
+        .mode-card:nth-child(2) {
+            border-top-color: #4299e1;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .mode-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mode-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+
+        .mode-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .mode-subtitle {
+            font-size: 0.9em;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .mode-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .mode-features li {
+            padding: 8px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+        }
+
+        .mode-features li::before {
+            content: '✓';
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .mode-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: #48bb78;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .mode-card:nth-child(2) .mode-btn {
+            background: #4299e1;
+        }
+
+        .mode-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        /* Level Cards */
+        .level-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .level-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-color: #48bb78;
+        }
+
+        .card-content {
+            text-align: center;
+        }
+
+        .level-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .level-name {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .level-cefr {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #edf2f7;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #718096;
+            margin-bottom: 15px;
+        }
+
+        .level-description {
+            font-size: 0.95em;
+            color: #718096;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .practice-btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background: #e2e8f0;
+            color: #718096;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .level-card:nth-child(2) .practice-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .practice-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* Resources Section */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .resource-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 20px;
+            background: white;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .resource-item:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .resource-text {
+            text-align: center;
+        }
+
+        .resource-name {
+            font-weight: 500;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+
+        .resource-desc {
+            font-size: 0.85em;
+            color: #a0aec0;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 30px 40px;
+            text-align: center;
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-links {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #718096;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #2d3748;
+        }
+
+        .footer-copyright {
+            font-size: 0.85em;
+            color: #a0aec0;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .path-steps {
+                flex-direction: column;
+            }
+
+            .path-steps::before {
+                display: none;
+            }
+
+            .path-step {
+                margin-bottom: 30px;
+            }
+
+            .mode-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .weakness-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .learning-path {
+                padding: 25px;
+            }
+
+            .resources-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Stats -->
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <h1>GEPT English</h1>
+                    <p class="subtitle">AI 口袋家教</p>
+                </div>
+                <div class="header-info">
+                    <div>學員編號：690001</div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">練習學習天數</div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-unit">天</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">本週練習時數</div>
+                    <div class="stat-value">3.5</div>
+                    <div class="stat-unit">小時</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">完成題數總計</div>
+                    <div class="stat-value">132</div>
+                    <div class="stat-unit">題</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">預估程度分數</div>
+                    <div class="stat-value">B1</div>
+                    <div class="stat-unit">測1已達分</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Learning Path -->
+            <div class="learning-path">
+                <h2 class="section-title">🎯 學習路徑</h2>
+                <div class="path-steps">
+                    <div class="path-step">
+                        <div class="step-icon">📋</div>
+                        <div class="step-title">自我診斷</div>
+                        <div class="step-desc">快速獲得挑戰級數建議</div>
+                    </div>
+                    <div class="path-step">
+                        <div class="step-icon">📚</div>
+                        <div class="step-title">聽讀測驗</div>
+                        <div class="step-desc">初級、中級、中高級</div>
+                    </div>
+                    <div class="path-step">
+                        <div class="step-icon">✍️</div>
+                        <div class="step-title">口說寫作</div>
+                        <div class="step-desc">AI 自動評分回饋</div>
+                    </div>
+                    <div class="path-step">
+                        <div class="step-icon">🏆</div>
+                        <div class="step-title">個人化診斷</div>
+                        <div class="step-desc">學習策略建議</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weakness Analysis -->
+            <div class="weakness-section">
+                <h2 class="section-title">📊 強弱項分析</h2>
+                <div class="weakness-grid">
+                    <div class="weakness-card weak">
+                        <div class="weakness-header">
+                            <span class="weakness-icon">⚠️</span>
+                            <span class="weakness-level">需加強</span>
+                        </div>
+                        <h3 class="weakness-title">詞彙辨析</h3>
+                        <div class="weakness-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">正確率</span>
+                                <span class="stat-value weak-value">62%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">練習次數</span>
+                                <span class="stat-value">28 題</span>
+                            </div>
+                        </div>
+                        <div class="weakness-keywords">
+                            <span class="keyword">reliable</span>
+                            <span class="keyword">considerable</span>
+                            <span class="keyword">postpone</span>
+                        </div>
+                        <a href="index.html" class="improve-btn">加強練習</a>
+                    </div>
+
+                    <div class="weakness-card moderate">
+                        <div class="weakness-header">
+                            <span class="weakness-icon">📈</span>
+                            <span class="weakness-level">持續進步</span>
+                        </div>
+                        <h3 class="weakness-title">文法結構</h3>
+                        <div class="weakness-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">正確率</span>
+                                <span class="stat-value moderate-value">75%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">練習次數</span>
+                                <span class="stat-value">42 題</span>
+                            </div>
+                        </div>
+                        <div class="weakness-keywords">
+                            <span class="keyword">suggest that</span>
+                            <span class="keyword">形容詞位置</span>
+                        </div>
+                        <a href="index.html" class="improve-btn">繼續練習</a>
+                    </div>
+
+                    <div class="weakness-card strong">
+                        <div class="weakness-header">
+                            <span class="weakness-icon">✅</span>
+                            <span class="weakness-level">表現優秀</span>
+                        </div>
+                        <h3 class="weakness-title">時態運用</h3>
+                        <div class="weakness-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">正確率</span>
+                                <span class="stat-value strong-value">89%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">練習次數</span>
+                                <span class="stat-value">62 題</span>
+                            </div>
+                        </div>
+                        <div class="weakness-keywords">
+                            <span class="keyword">過去式</span>
+                            <span class="keyword">現在完成式</span>
+                        </div>
+                        <a href="index.html" class="improve-btn">保持優勢</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Modes -->
+            <h2 class="section-title">📝 學習模式</h2>
+            <div class="mode-cards">
+                <div class="mode-card">
+                    <div class="mode-header">
+                        <span class="mode-icon">⭐</span>
+                        <div>
+                            <div class="mode-title">練習模式</div>
+                        </div>
+                    </div>
+                    <p class="mode-subtitle">輕鬆依照自己的步調答題</p>
+                    <ul class="mode-features">
+                        <li>測驗成績</li>
+                        <li>試題解答</li>
+                        <li>試題詳解</li>
+                        <li>強弱項分析</li>
+                        <li>分項能力表現</li>
+                        <li>專屬的學習策略</li>
+                        <li>關鍵字彙和句型</li>
+                    </ul>
+                    <a href="index.html" class="mode-btn">開始練習</a>
+                </div>
+
+                <div class="mode-card">
+                    <div class="mode-header">
+                        <span class="mode-icon">⏱</span>
+                        <div>
+                            <div class="mode-title">計時模式</div>
+                        </div>
+                    </div>
+                    <p class="mode-subtitle">比照正式測驗時間限時完成作答</p>
+                    <ul class="mode-features">
+                        <li>測驗成績</li>
+                        <li>試題解答</li>
+                        <li>試題詳解</li>
+                        <li>強弱項分析</li>
+                        <li>分項能力表現</li>
+                        <li>專屬的學習策略</li>
+                        <li>關鍵字彙和句型</li>
+                    </ul>
+                    <a href="index.html" class="mode-btn">限時挑戰</a>
+                </div>
+            </div>
+
+            <!-- Level Selection -->
+            <h2 class="section-title">🎓 選擇級別</h2>
+            <div class="level-cards">
+                <div class="level-card" onclick="window.location.href='elementary.html'">
+                    <div class="card-content">
+                        <div class="level-icon">📘</div>
+                        <h3 class="level-name">GEPT 初級</h3>
+                        <div class="level-cefr">CEFR A2</div>
+                        <p class="level-description">
+                            基礎文法與單字練習<br>
+                            適合國中程度學習者
+                        </p>
+                        <a href="elementary.html" class="practice-btn">未完成</a>
+                    </div>
+                </div>
+
+                <div class="level-card" onclick="window.location.href='index.html'">
+                    <div class="card-content">
+                        <div class="level-icon">📗</div>
+                        <h3 class="level-name">GEPT 中級</h3>
+                        <div class="level-cefr">CEFR B1</div>
+                        <p class="level-description">
+                            單字辨析與克漏字練習<br>
+                            適合高中程度學習者
+                        </p>
+                        <a href="index.html" class="practice-btn">已完成</a>
+                    </div>
+                </div>
+
+                <div class="level-card" onclick="window.location.href='high-intermediate.html'">
+                    <div class="card-content">
+                        <div class="level-icon">📕</div>
+                        <h3 class="level-name">GEPT 中高級</h3>
+                        <div class="level-cefr">CEFR B2</div>
+                        <p class="level-description">
+                            長篇閱讀理解練習<br>
+                            適合大學程度學習者
+                        </p>
+                        <a href="high-intermediate.html" class="practice-btn">未完成</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources -->
+            <h2 class="section-title">📚 學習資源</h2>
+            <div class="resources-grid">
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Elementary.pdf" target="_blank" class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-text">
+                        <div class="resource-name">初級字表</div>
+                        <div class="resource-desc">2,263 字</div>
+                    </div>
+                </a>
+
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Intermediate.pdf" target="_blank" class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-text">
+                        <div class="resource-name">中級字表</div>
+                        <div class="resource-desc">5,617 字</div>
+                    </div>
+                </a>
+
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_High-Intermediate.pdf" target="_blank" class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-text">
+                        <div class="resource-name">中高級字表</div>
+                        <div class="resource-desc">7,993 字</div>
+                    </div>
+                </a>
+
+                <a href="https://www.gept.org.tw/" target="_blank" class="resource-item">
+                    <div class="resource-icon">🌐</div>
+                    <div class="resource-text">
+                        <div class="resource-name">GEPT 官網</div>
+                        <div class="resource-desc">報名資訊</div>
+                    </div>
+                </a>
+
+                <a href="https://prep.gept.org.tw/" target="_blank" class="resource-item">
+                    <div class="resource-icon">💻</div>
+                    <div class="resource-text">
+                        <div class="resource-name">i 學網</div>
+                        <div class="resource-desc">線上學習</div>
+                    </div>
+                </a>
+
+                <a href="https://www.lttc.ntu.edu.tw/tw/vocabulary" target="_blank" class="resource-item">
+                    <div class="resource-icon">📖</div>
+                    <div class="resource-text">
+                        <div class="resource-name">線上字典</div>
+                        <div class="resource-desc">含發音</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="https://www.gept.org.tw/" target="_blank">官方網站</a>
+                <a href="https://www.lttc.ntu.edu.tw/" target="_blank">語言訓練測驗中心</a>
+                <a href="https://prep.gept.org.tw/" target="_blank">i 學網</a>
+            </div>
+            <p class="footer-copyright">
+                本網站為學習用途，內容參考自 LTTC 語言訓練測驗中心官方資源
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 中級練習</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .header-links {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        .header-links p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .header-links a:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .level-info {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .level-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .level-info p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+
+        .level-elementary {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .level-intermediate {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .level-high {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation h4 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .explanation p {
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .submit-btn, .refresh-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 10px;
+        }
+
+        .submit-btn:hover, .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .score-display h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .score-display p {
+            font-size: 1.2em;
+        }
+
+        .reset-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: white;
+            color: #28a745;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .back-btn {
+                position: static;
+                transform: none;
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-btn">← 返回</a>
+            <h1>📗 GEPT 智能練習系統</h1>
+            <p>隨機題庫 - 涵蓋初級/中級/中高級</p>
+            <div class="header-links">
+                <p>📖 官方單字表下載：</p>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Elementary.pdf" target="_blank">初級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Intermediate.pdf" target="_blank">中級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_High-Intermediate.pdf" target="_blank">中高級</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="level-info">
+                <h3>💡 智能題庫系統</h3>
+                <p>本系統會從<strong>初級、中級</strong>字表中隨機抽選 <strong>10道題目</strong>。每次重新整理頁面或點擊「換一組題目」都會產生新的題組，幫助您穩固基礎！題目標有級別標記，讓您了解各題難度。</p>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="refresh-btn" onclick="location.reload()">🔄 換一組題目</button>
+            </div>
+
+            <form id="quizForm">
+                <div id="questionsContainer">
+                    <div class="loading">正在載入題目...</div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="submit-btn" id="submitBtn">提交答案</button>
+                </div>
+
+                <div class="score-display" id="scoreDisplay">
+                    <h2>🎉 測驗結果</h2>
+                    <p id="scoreText"></p>
+                    <button type="button" class="reset-btn" id="resetBtn">重新測驗</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 題庫 - 包含各級別的題目
+        const questionBank = [
+            // 初級題目 (CEFR A2)
+            {
+                level: 'elementary',
+                question: 'I _______ to school by bus every day.',
+                options: ['go', 'goes', 'going', 'went'],
+                answer: 0,
+                explanation: '主詞 "I" 搭配一般現在式動詞原形 "go"。every day 表示習慣性動作，使用現在簡單式。',
+                translation: '我每天搭公車去學校。'
+            },
+            {
+                level: 'elementary',
+                question: 'She _______ her homework yesterday.',
+                options: ['finish', 'finished', 'finishes', 'finishing'],
+                answer: 1,
+                explanation: 'yesterday 表示過去的時間，需使用過去式 "finished"。',
+                translation: '她昨天完成了她的作業。'
+            },
+            {
+                level: 'elementary',
+                question: 'There _______ many students in the classroom.',
+                options: ['is', 'are', 'was', 'be'],
+                answer: 1,
+                explanation: '"many students" 是複數，使用 "are"。There are 表示「有」（複數）。',
+                translation: '教室裡有很多學生。'
+            },
+            {
+                level: 'elementary',
+                question: 'My brother is _______ than me.',
+                options: ['tall', 'taller', 'tallest', 'more tall'],
+                answer: 1,
+                explanation: '比較級用法，tall 的比較級是 taller。than 是比較級的標誌。',
+                translation: '我哥哥比我高。'
+            },
+            {
+                level: 'elementary',
+                question: 'We _______ a movie last night.',
+                options: ['watch', 'watched', 'watching', 'watches'],
+                answer: 1,
+                explanation: 'last night 表示過去時間，使用過去式 "watched"。',
+                translation: '我們昨晚看了一部電影。'
+            },
+            {
+                level: 'elementary',
+                question: 'Can you _______ me your pencil, please?',
+                options: ['lend', 'borrow', 'lending', 'borrows'],
+                answer: 0,
+                explanation: 'lend (借出) 是從「我」借給「你」；borrow (借入) 是「你」向「我」借。Can you 後接動詞原形。',
+                translation: '你可以借我你的鉛筆嗎？'
+            },
+            {
+                level: 'elementary',
+                question: 'She _______ English very well.',
+                options: ['speak', 'speaks', 'speaking', 'spoke'],
+                answer: 1,
+                explanation: '主詞 "She" 是第三人稱單數，現在簡單式動詞要加 s。',
+                translation: '她英文說得很好。'
+            },
+
+            // 中級題目 (CEFR B1)
+            {
+                level: 'intermediate',
+                question: 'The manager was very _______ when she praised the whole team for their hard work.',
+                options: ['generous', 'generosity', 'generously', 'generate'],
+                answer: 0,
+                explanation: '空格前有 be 動詞 "was" 和副詞 "very"，後面需要形容詞來描述主詞的狀態。generous (慷慨的、大方的) 是形容詞，符合句意。',
+                translation: '經理在讚揚整個團隊的辛勤工作時非常大方。'
+            },
+            {
+                level: 'intermediate',
+                question: 'Because of the heavy traffic, we had to _______ our trip to the airport.',
+                options: ['postpone', 'prevent', 'promote', 'pretend'],
+                answer: 0,
+                explanation: 'postpone (延後、推遲) 符合句意，因為交通堵塞而需要延遲行程。prevent (阻止)、promote (促進)、pretend (假裝) 皆不符合語意。',
+                translation: '因為交通繁忙，我們不得不推遲前往機場的行程。'
+            },
+            {
+                level: 'intermediate',
+                question: 'Her doctor _______ that she get more exercise and eat healthier food.',
+                options: ['suggested', 'suggestion', 'suggestive', 'suggestible'],
+                answer: 0,
+                explanation: '空格需要動詞來完成句子。suggested (建議) 是動詞過去式，且 "suggest that + 主詞 + 原形動詞" 是正確的句型結構。',
+                translation: '她的醫生建議她多運動並吃得更健康。'
+            },
+            {
+                level: 'intermediate',
+                question: 'The new employee seems very _______; she always finishes her tasks before the deadline.',
+                options: ['reliable', 'reliably', 'reliance', 'rely'],
+                answer: 0,
+                explanation: '"seem + 形容詞" 是固定用法，用來描述主詞的特質。reliable (可靠的) 是形容詞，符合句意。',
+                translation: '這位新員工看起來非常可靠；她總是在截止日期前完成任務。'
+            },
+            {
+                level: 'intermediate',
+                question: 'Despite the bad weather, the outdoor concert was _______ a success.',
+                options: ['considerable', 'considerably', 'considerate', 'consider'],
+                answer: 0,
+                explanation: '空格後有名詞 "success"，前面需要形容詞來修飾。considerable (相當大的) 符合句意，表示音樂會相當成功。',
+                translation: '儘管天氣不好，這場戶外音樂會仍然相當成功。'
+            },
+            {
+                level: 'intermediate',
+                question: 'The company decided to _______ its business to Asia next year.',
+                options: ['expand', 'expansion', 'expansive', 'expanding'],
+                answer: 0,
+                explanation: '"decide to + 動詞原形" 是固定句型。expand (擴展) 是動詞原形，符合句意。',
+                translation: '公司決定明年將業務擴展到亞洲。'
+            },
+            {
+                level: 'intermediate',
+                question: 'The presentation was so _______ that many people fell asleep.',
+                options: ['boring', 'bored', 'bore', 'boredom'],
+                answer: 0,
+                explanation: '形容事物令人感到如何用 -ing 形容詞。boring (令人無聊的) 用來形容 presentation。bored 是形容人感到無聊。',
+                translation: '這個簡報太無聊了，以至於很多人都睡著了。'
+            },
+            {
+                level: 'intermediate',
+                question: 'The museum offers a _______ of activities for children during the summer.',
+                options: ['variety', 'various', 'vary', 'varied'],
+                answer: 0,
+                explanation: '"a variety of" 是固定片語，表示「各種各樣的」。variety 是名詞。',
+                translation: '博物館在夏季為兒童提供各種各樣的活動。'
+            },
+
+            // 中高級題目 (CEFR B2)
+            {
+                level: 'high',
+                question: 'The government has implemented several _______ to reduce air pollution in the city.',
+                options: ['initiatives', 'initiates', 'initial', 'initially'],
+                answer: 0,
+                explanation: 'several 後面需要複數名詞。initiatives (倡議、措施) 是名詞複數形式，符合句意。',
+                translation: '政府已經實施了幾項措施來減少城市的空氣污染。'
+            },
+            {
+                level: 'high',
+                question: 'The research findings _______ that regular exercise can significantly improve mental health.',
+                options: ['indicate', 'indication', 'indicative', 'indicated'],
+                answer: 0,
+                explanation: '主詞 "findings" 是複數，需要動詞原形。indicate (顯示、表明) 符合句意和文法。這裡使用現在簡單式表達研究的結論。',
+                translation: '研究結果顯示，定期運動可以顯著改善心理健康。'
+            },
+            {
+                level: 'high',
+                question: 'The professor\'s lecture was so _______ that it inspired many students to pursue careers in science.',
+                options: ['compelling', 'compelled', 'compel', 'compulsion'],
+                answer: 0,
+                explanation: 'so...that 句型中需要形容詞。compelling (引人入勝的、令人信服的) 用來形容 lecture。',
+                translation: '教授的演講如此引人入勝，激勵了許多學生追求科學事業。'
+            },
+            {
+                level: 'high',
+                question: 'The committee will _______ all proposals before making a final decision.',
+                options: ['evaluate', 'evaluation', 'evaluative', 'evaluator'],
+                answer: 0,
+                explanation: 'will 後面需要動詞原形。evaluate (評估) 符合句意。',
+                translation: '委員會將在做出最終決定之前評估所有提案。'
+            },
+            {
+                level: 'high',
+                question: 'The company\'s _______ approach to innovation has led to remarkable success.',
+                options: ['innovative', 'innovate', 'innovation', 'innovatively'],
+                answer: 0,
+                explanation: '名詞 "approach" 前面需要形容詞修飾。innovative (創新的) 是形容詞。',
+                translation: '公司創新的方法帶來了顯著的成功。'
+            },
+            {
+                level: 'high',
+                question: 'Climate change poses a _______ threat to biodiversity worldwide.',
+                options: ['significant', 'significantly', 'significance', 'signify'],
+                answer: 0,
+                explanation: '名詞 "threat" 前需要形容詞修飾。significant (重大的、顯著的) 是形容詞。',
+                translation: '氣候變化對全球生物多樣性構成重大威脅。'
+            },
+            {
+                level: 'high',
+                question: 'The new policy aims to _______ economic growth while protecting the environment.',
+                options: ['sustain', 'sustainable', 'sustainability', 'sustained'],
+                answer: 0,
+                explanation: '"aim to + 動詞原形" 是固定用法。sustain (維持、支撐) 是動詞原形。',
+                translation: '新政策旨在維持經濟增長的同時保護環境。'
+            },
+            {
+                level: 'high',
+                question: 'The scientist\'s groundbreaking research has _______ changed our understanding of the universe.',
+                options: ['fundamentally', 'fundamental', 'fundament', 'fundamentals'],
+                answer: 0,
+                explanation: '動詞 "changed" 需要副詞修飾。fundamentally (根本上、從根本上) 是副詞。',
+                translation: '科學家開創性的研究從根本上改變了我們對宇宙的理解。'
+            },
+            {
+                level: 'high',
+                question: 'The organization is committed to promoting _______ among different cultural groups.',
+                options: ['diversity', 'diverse', 'diversify', 'diversified'],
+                answer: 0,
+                explanation: '動詞 "promoting" 後需要名詞作受詞。diversity (多樣性) 是名詞。',
+                translation: '該組織致力於促進不同文化群體之間的多樣性。'
+            },
+            {
+                level: 'high',
+                question: 'The economic crisis had a _______ impact on small businesses across the country.',
+                options: ['devastating', 'devastate', 'devastation', 'devastated'],
+                answer: 0,
+                explanation: '名詞 "impact" 前需要形容詞修飾。devastating (毀滅性的、災難性的) 是形容詞，-ing 形式表示主動「造成毀滅的」。',
+                translation: '經濟危機對全國各地的小企業產生了毀滅性的影響。'
+            },
+            {
+                level: 'high',
+                question: 'The documentary provided valuable _______ into the lives of endangered species.',
+                options: ['insights', 'insight', 'insightful', 'insightfully'],
+                answer: 0,
+                explanation: '形容詞 "valuable" 後需要名詞。insights (見解、洞察) 用複數表示多方面的理解。',
+                translation: '這部紀錄片提供了對瀕危物種生活的寶貴見解。'
+            }
+        ];
+
+        // 隨機選擇10題（僅從初級和中級）
+        function getRandomQuestions(count = 10) {
+            const filtered = questionBank.filter(q => q.level === 'elementary' || q.level === 'intermediate');
+            const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // 級別標記
+        function getLevelBadge(level) {
+            const badges = {
+                'elementary': '<span class="level-badge level-elementary">初級 A2</span>',
+                'intermediate': '<span class="level-badge level-intermediate">中級 B1</span>',
+                'high': '<span class="level-badge level-high">中高級 B2</span>'
+            };
+            return badges[level] || '';
+        }
+
+        // 生成題目HTML
+        function generateQuestions() {
+            const questions = getRandomQuestions(10);
+            const container = document.getElementById('questionsContainer');
+            
+            let html = '';
+            questions.forEach((q, index) => {
+                html += `
+                    <div class="question-card" data-answer="${q.answer}">
+                        <div class="question-number">第 ${index + 1} 題 ${getLevelBadge(q.level)}</div>
+                        <div class="question-text">${q.question}</div>
+                        <div class="options">
+                            ${q.options.map((opt, i) => `
+                                <div class="option">
+                                    <input type="radio" name="q${index}" id="q${index}${String.fromCharCode(97 + i)}" value="${i}">
+                                    <label for="q${index}${String.fromCharCode(97 + i)}">(${String.fromCharCode(65 + i)}) ${opt}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="explanation">
+                            <h4>✅ 正確答案：(${String.fromCharCode(65 + q.answer)}) ${q.options[q.answer]}</h4>
+                            <p><strong>解析：</strong>${q.explanation}</p>
+                            <p><strong>翻譯：</strong>${q.translation}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // 初始化題目
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQuestions();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreText = document.getElementById('scoreText');
+
+            submitBtn.addEventListener('click', function() {
+                const questionCards = document.querySelectorAll('.question-card');
+                let score = 0;
+                let answered = 0;
+
+                questionCards.forEach((card, index) => {
+                    const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                    
+                    if (selectedOption) {
+                        answered++;
+                        const correctAnswer = parseInt(card.getAttribute('data-answer'));
+                        const userAnswer = parseInt(selectedOption.value);
+                        const options = card.querySelectorAll('.option');
+                        
+                        options.forEach(option => {
+                            const input = option.querySelector('input');
+                            if (parseInt(input.value) === correctAnswer) {
+                                option.classList.add('correct');
+                            }
+                            if (input.checked && parseInt(input.value) !== correctAnswer) {
+                                option.classList.add('incorrect');
+                            }
+                            input.disabled = true;
+                        });
+
+                        if (userAnswer === correctAnswer) {
+                            score++;
+                        }
+
+                        const explanation = card.querySelector('.explanation');
+                        explanation.classList.add('show');
+                    }
+                });
+
+                if (answered < 10) {
+                    alert('請完成所有題目再提交答案！');
+                    // 重新啟用所有選項
+                    document.querySelectorAll('input[type="radio"]').forEach(input => {
+                        input.disabled = false;
+                    });
+                    // 隱藏所有解析
+                    document.querySelectorAll('.explanation').forEach(exp => {
+                        exp.classList.remove('show');
+                    });
+                    // 清除所有標記
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+                    return;
+                }
+
+                const percentage = (score / 10 * 100).toFixed(0);
+                let message = '';
+                if (score >= 9) {
+                    message = '太棒了！幾乎全對！💯';
+                } else if (score >= 7) {
+                    message = '表現優秀！繼續加油！👏';
+                } else if (score >= 5) {
+                    message = '還不錯！再接再厲！💪';
+                } else {
+                    message = '需要再努力！多複習單字喔！📖';
+                }
+
+                scoreText.innerHTML = `您答對了 <strong>${score}</strong> 題，共 10 題<br>得分：${percentage} 分<br>${message}`;
+                scoreDisplay.classList.add('show');
+                submitBtn.disabled = true;
+
+                scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            resetBtn.addEventListener('click', function() {
+                // 重新載入頁面，生成新的題目
+                location.reload();
+            });
+        });
+    </script>
+</body>
+</html>

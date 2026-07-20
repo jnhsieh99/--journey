@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 初級練習</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-btn">← 返回</a>
+            <h1>📘 GEPT 初級練習</h1>
+            <p>CEFR A2 · 基礎文法與單字練習</p>
+            <div class="header-links">
+                <p>📖 官方單字表下載：</p>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Elementary.pdf" target="_blank">初級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_Intermediate.pdf" target="_blank">中級</a>
+                <a href="https://www.lttc.ntu.edu.tw/resources/GEPT/GEPT_High-Intermediate.pdf" target="_blank">中高級</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="level-info">
+                <h3>💡 智能題庫系統</h3>
+                <p>本系統會從<strong>初級</strong>字表題庫中隨機抽選 <strong>10 道題目</strong>，涵蓋時態運用、文法結構、詞彙辨析三大類別。每次重新整理頁面或點擊「換一組題目」都會產生新的題組，幫助您穩固基礎！</p>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="refresh-btn" onclick="location.reload()">🔄 換一組題目</button>
+            </div>
+
+            <form id="quizForm">
+                <div id="questionsContainer">
+                    <div class="loading">正在載入題目...</div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="submit-btn" id="submitBtn">提交答案</button>
+                </div>
+
+                <div class="score-display" id="scoreDisplay">
+                    <h2>🎉 測驗結果</h2>
+                    <p id="scoreText"></p>
+                    <button type="button" class="reset-btn" id="resetBtn">重新測驗</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>const PAGE_LEVEL = 'elementary';</script>
+    <script src="quiz.js"></script>
+</body>
+</html>
